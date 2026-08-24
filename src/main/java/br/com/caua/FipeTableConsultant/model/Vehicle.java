@@ -1,6 +1,5 @@
 package br.com.caua.FipeTableConsultant.model;
 
-import br.com.caua.FipeTableConsultant.util.modelVehicle;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

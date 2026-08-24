@@ -1,4 +1,4 @@
-package br.com.caua.FipeTableConsultant.util;
+package br.com.caua.FipeTableConsultant.model;
 
 public enum modelVehicle {
     CAR,

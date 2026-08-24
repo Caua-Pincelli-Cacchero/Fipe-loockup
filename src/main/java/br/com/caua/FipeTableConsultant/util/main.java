@@ -1,19 +1,18 @@
-package br.com.caua.FipeTableConsultant.main;
+package br.com.caua.FipeTableConsultant.util;
 
 import java.util.Scanner;
 
 public class main {
     Scanner scanner = new Scanner(System.in);
 
-    public void showMenu() {
-        String menu ="""
+    public static void showMenu() {
+        var menu ="""
                 Escolha uma opção:
                 Carro
                 Moto
                 Caminhão
                 """;
-
-        String option = scanner.nextLine();
+        System.out.println(menu);
         
     }
 }
