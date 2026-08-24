@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import static br.com.caua.FipeTableConsultant.util.utils.showMenu;
+import static br.com.caua.FipeTableConsultant.util.utils.verifyVehicle;
 
 @SpringBootApplication
 public class FipeTableConsultantApplication implements CommandLineRunner {
@@ -20,5 +21,5 @@ public class FipeTableConsultantApplication implements CommandLineRunner {
 			utils.verifyInput();
 		}
 
-	}r
+	}
 }
