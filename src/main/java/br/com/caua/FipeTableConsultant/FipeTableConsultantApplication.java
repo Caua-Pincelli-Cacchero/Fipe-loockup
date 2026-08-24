@@ -1,9 +1,10 @@
 package br.com.caua.FipeTableConsultant;
 
-import br.com.caua.FipeTableConsultant.util.main;
+import br.com.caua.FipeTableConsultant.util.utils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import static br.com.caua.FipeTableConsultant.util.utils.showMenu;
 
 @SpringBootApplication
 public class FipeTableConsultantApplication implements CommandLineRunner {
@@ -12,6 +13,12 @@ public class FipeTableConsultantApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		main.showMenu();
-	}
+		utils utils = new utils();
+		showMenu();
+
+		while(!utils.verifyInput()) {
+			utils.verifyInput();
+		}
+
+	}r
 }
