@@ -1,81 +1,65 @@
 package br.com.caua.FipeTableConsultant.util;
 
-import br.com.caua.FipeTableConsultant.model.Vehicle;
+import br.com.caua.FipeTableConsultant.model.Brand;
+import br.com.caua.FipeTableConsultant.service.ApiConsumption;
+import br.com.caua.FipeTableConsultant.service.ConvertData;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static br.com.caua.FipeTableConsultant.model.baseURL.BASE_URL;
 
 public class utils {
+
+    static ConvertData convertData = new ConvertData();
+    static ApiConsumption apiConsumption = new ApiConsumption();
     static Scanner scanner = new Scanner(System.in);
+
     private final static List<String> VALID_INPUT = new ArrayList<>(
-            Arrays.asList("CARRO",
-                    "CAMINHAO",
-                    "CAMINHÃO",
-                    "MOTO"));
+            Arrays.asList("CARRO", "CAMINHAO", "CAMINHÃO", "MOTO"));
 
     public static void showVehicletMenu() {
-        var menu ="""
+        System.out.println("""
                 Escolha uma opção:
                 Carro
                 Moto
                 Caminhão
-                """;
-        System.out.println(menu);
+                """);
     }
 
     public static void showMarkMenu() {
-        var menu = """
-                Selecione a marca do seu veiculo:""";
-        System.out.println(menu);
+        System.out.println("Selecione a marca do seu veiculo:");
     }
-
-    public static boolean verifyInputNullOrBlank() {
-        try {
-            var input = scanner.nextLine();
-
-            if (input == null || input.isBlank()) {
-                throw new IllegalArgumentException("A opção não pode ser vazia!");
-            }
-
-            return true;
-
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public static String verifyTypeVehicle() {
-        utils.verifyInputNullOrBlank();
+    
+    public static String readValidInput() {
         var input = scanner.nextLine();
-
-        if (!VALID_INPUT.contains(input.toUpperCase())) {
-            throw new IllegalArgumentException("Opção inválida: " + input + ", tente novamente!");
+        if (input == null || input.isBlank()) {
+            System.out.println("A opção não pode ser vazia!");
+            return null;
         }
-
         return input;
     }
 
-    private static String changeURL() {
-        verifyTypeVehicle();
-
-        String address;
-
-        if(verifyTypeVehicle().contains("CARRO")) {
-            address = BASE_URL + "/carros/marcas";
-        } else if (verifyTypeVehicle().contains("MOTO")) {
-            address = BASE_URL + "/motos/marcas";
-        } else {
-            address = BASE_URL + "/caminhoes/marcas";
+    public static String verifyTypeVehicle(String input) {
+        if (!VALID_INPUT.contains(input.toUpperCase())) {
+            throw new IllegalArgumentException("Opção inválida: " + input + ", tente novamente!");
         }
-
-        return address;
+        return input;
     }
 
-   // public static Vehicle
+    private static String changeURL(String tipo) {
+        String tipoUpper = tipo.toUpperCase();
+        if (tipoUpper.contains("CARRO")) {
+            return BASE_URL + "/carros/marcas";
+        } else if (tipoUpper.contains("MOTO")) {
+            return BASE_URL + "/motos/marcas";
+        } else {
+            return BASE_URL + "/caminhoes/marcas";
+        }
+    }
 
+    public static void getVehicleData(String tipo) {
+        String json = apiConsumption.getData(changeURL(tipo));
+        var listaMarcas = convertData.getList(json, Brand.class);
+        listaMarcas.forEach(System.out::println);
+    }
 }

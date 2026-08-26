@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Vehicle(@JsonAlias("Valor") int value,
+                      @JsonAlias("CodigoFipe") String fipeCode,
                       @JsonAlias("Marca") String mark,
                       @JsonAlias("Modelo") String model,
                       @JsonAlias("AnoModelo") LocalDateTime year) {}

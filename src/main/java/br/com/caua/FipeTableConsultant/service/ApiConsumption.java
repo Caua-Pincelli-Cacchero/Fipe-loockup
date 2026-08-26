@@ -9,9 +9,9 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 public class ApiConsumption {
 
-    private final HttpClient client = HttpClient.newHttpClient();
+    private static final HttpClient client = HttpClient.newHttpClient();
 
-    public String getData(String address) {
+    public static String getData(String address) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(address))
                 .build();
