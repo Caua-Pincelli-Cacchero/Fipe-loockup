@@ -2,9 +2,12 @@ package br.com.caua.FipeTableConsultant.util;
 
 import br.com.caua.FipeTableConsultant.model.Brand;
 import br.com.caua.FipeTableConsultant.model.Model;
+import br.com.caua.FipeTableConsultant.model.Vehicle;
+import br.com.caua.FipeTableConsultant.model.Year;
 import br.com.caua.FipeTableConsultant.model.modelResponse;
 import br.com.caua.FipeTableConsultant.service.ApiConsumption;
 import br.com.caua.FipeTableConsultant.service.ConvertData;
+import lombok.Setter;
 
 import java.util.*;
 
@@ -17,7 +20,10 @@ public class utils {
     private final static List<String> VALID_INPUT = new ArrayList<>(
             Arrays.asList("CARRO", "CAMINHAO", "CAMINHÃO", "MOTO"));
 
+    @Setter
     private static Brand brand;
+    @Setter
+    private static Model model;
     private static String vehicleType;
 
     public static void showVehicletMenu() {
@@ -63,6 +69,20 @@ public class utils {
         return BASE_URL + "/" + tipo + "/marcas/" + brand.code() + "/modelos";
     }
 
+    private static String changeValidYearsURL() {
+        String tipo = vehicleType.toUpperCase().contains("CARRO") ? "carros"
+                : vehicleType.toUpperCase().contains("MOTO") ? "motos"
+                : "caminhoes";
+        return BASE_URL + "/" + tipo + "/marcas/" + brand.code() + "/modelos/" + model.code() + "/anos";
+    }
+
+    private static String changeYearURL(String yearCode) {
+        String tipo = vehicleType.toUpperCase().contains("CARRO") ? "carros"
+                : vehicleType.toUpperCase().contains("MOTO") ? "motos"
+                : "caminhoes";
+        return BASE_URL + "/" + tipo + "/marcas/" + brand.code() + "/modelos/" + model.code() + "/anos/" + yearCode;
+    }
+
     public static List<Brand> showVehicleBrand(String address) {
         vehicleType = address;
         String json = apiConsumption.getData(changeVehicleURL(address));
@@ -78,7 +98,17 @@ public class utils {
         return response.models();
     }
 
-    public static void setBrand(Brand chosenBrand) {
-        brand = chosenBrand;
+    public static List<Vehicle> showAllVehiclesByYear() {
+        String json = apiConsumption.getData(changeValidYearsURL());
+        List<Year> validYears = convertData.getList(json, Year.class);
+
+        List<Vehicle> vehicles = new ArrayList<>();
+        for (Year year : validYears) {
+            String yearJson = apiConsumption.getData(changeYearURL(year.code()));
+            Vehicle vehicle = convertData.getObject(yearJson, Vehicle.class);
+            vehicles.add(vehicle);
+        }
+        vehicles.forEach(System.out::println);
+        return vehicles;
     }
 }

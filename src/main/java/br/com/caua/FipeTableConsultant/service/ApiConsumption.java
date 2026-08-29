@@ -10,10 +10,12 @@ import java.net.http.HttpResponse.BodyHandlers;
 public class ApiConsumption {
 
     private static final HttpClient client = HttpClient.newHttpClient();
+    private static final String API_TOKEN = System.getenv("FIPE_API_TOKEN");
 
     public static String getData(String address) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(address))
+                .header("X-Subscription-Token", API_TOKEN)
                 .build();
 
         HttpResponse<String> response;

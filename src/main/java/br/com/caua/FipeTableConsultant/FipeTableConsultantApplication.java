@@ -44,7 +44,6 @@ public class FipeTableConsultantApplication implements CommandLineRunner {
 		}
 
 		final String finalSelectedBrand = selectedBrand;
-
 		Brand chosenBrand = brands.stream()
 				.filter(b -> b.name().equalsIgnoreCase(finalSelectedBrand))
 				.findFirst()
@@ -52,7 +51,26 @@ public class FipeTableConsultantApplication implements CommandLineRunner {
 
 		utils.setBrand(chosenBrand);
 
-		List<Model> vehicles = utils.showVehicleModel();
-		vehicles.forEach(v -> System.out.println(v.name()));
+		List<Model> models = utils.showVehicleModel();
+
+		System.out.println("Selecione o modelo do seu veiculo:");
+		String selectedModel = null;
+		while (selectedModel == null) {
+			try {
+				selectedModel = utils.readValidInput();
+			} catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+
+		final String finalSelectedModel = selectedModel;
+		Model chosenModel = models.stream()
+				.filter(m -> m.name().toUpperCase().contains(finalSelectedModel.toUpperCase()))
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException("Modelo não encontrado: " + finalSelectedModel));
+
+		utils.setModel(chosenModel);
+
+		List<Vehicle> vehicles = utils.showAllVehiclesByYear();
 	}
 }
